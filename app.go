@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"github.com/AleksanderWWW/go-webapp/utils"
 )
 
-const IndexGreeting string = "Hello from Go"
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, IndexGreeting)
+	fmt.Fprint(w, utils.IndexGreeting)
 }
 
 func handleRequests() {

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -11,7 +12,11 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, IndexGreeting)
 }
 
-func main() {
+func handleRequests() {
 	http.HandleFunc("/", indexHandler)
-	http.ListenAndServe(":8080", nil)
+	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+func main() {
+	handleRequests()
 }

@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strings"
+
+	"github.com/gorilla/mux"
 
 	"github.com/AleksanderWWW/go-webapp/backend"
 	"github.com/AleksanderWWW/go-webapp/utils"
@@ -22,19 +23,19 @@ func retrieveAll(w http.ResponseWriter, r *http.Request) {
 }
 
 func retrieveSingle(w http.ResponseWriter, r *http.Request) {
-	url_path := strings.TrimPrefix(r.URL.Path, "/provisions/")
-	splited_path := strings.Split(url_path, "/")
-	id := splited_path[len(splited_path)-1]
+	vars := mux.Vars(r)
+	id := vars["id"]
 	p := backend.RetrieveByID(id)
 
 	json.NewEncoder(w).Encode(p)
 }
 
 func handleRequests() {
-	http.HandleFunc("/", indexHandler)
-	http.HandleFunc("/all", retrieveAll)
-	http.HandleFunc("/product/", retrieveSingle)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	myRouter := mux.NewRouter().StrictSlash(true)
+	myRouter.HandleFunc("/", indexHandler)
+	myRouter.HandleFunc("/all", retrieveAll)
+	myRouter.HandleFunc("/product/{id}", retrieveSingle)
+	log.Fatal(http.ListenAndServe(":8080", myRouter))
 }
 
 func main() {

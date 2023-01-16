@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	//"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
@@ -52,4 +52,22 @@ func InsertProduct(coll mongo.Collection, p resources.Product) {
 		panic(err)
 	}
 	log.Printf("Inserted document with _id: %v\n", result.InsertedID)
+}
+
+func RetrieveAllProducts(coll mongo.Collection) []bson.M {
+	ctx := context.TODO()
+	var products []bson.M
+
+	cursor, err := coll.Find(ctx, bson.M{})
+	defer cursor.Close(ctx)
+	if err != nil {
+		panic(err)
+	}
+
+	for cursor.Next(ctx) {
+		var product bson.M
+		cursor.Decode(&product)
+		products = append(products, product)
+	}
+	return products
 }

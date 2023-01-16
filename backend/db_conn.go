@@ -1,14 +1,14 @@
 package backend
 
 import (
-	"os"
-	"log"
 	"context"
+	"log"
+	"os"
 
 	//"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	
+
 	"github.com/AleksanderWWW/go-webapp/resources"
 )
 
@@ -17,7 +17,6 @@ var allProducts []resources.Product = []resources.Product{
 	{Id: "C2", Name: "Chair", QuantityInStock: 100, Price: 9850},
 	{Id: "B1", Name: "Bed", QuantityInStock: 900, Price: 23378},
 }
-
 
 func RetrieveAll() []resources.Product {
 	return allProducts

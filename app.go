@@ -3,9 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
-	"io/ioutil"
 
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
@@ -14,7 +14,6 @@ import (
 	"github.com/AleksanderWWW/go-webapp/resources"
 	"github.com/AleksanderWWW/go-webapp/utils"
 )
-
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, utils.IndexGreeting)
@@ -37,7 +36,7 @@ func insertSingle(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	var p resources.Product
 	json.Unmarshal(reqBody, &p)
-	
+
 	coll := backend.ConnectToMongo(utils.DatabaseName, utils.CollectionName)
 
 	defer backend.CloseMongoConnection(coll.Database().Client())
@@ -58,6 +57,6 @@ func main() {
 	if err := godotenv.Load(); err != nil {
 		log.Println("No .env file found")
 	}
-	
+
 	handleRequests()
 }
